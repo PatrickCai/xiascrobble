@@ -1,5 +1,6 @@
 import gevent
 
+from controllers.last_contr import test
 from lastxia import xia, last
 from models import user
 from log import logger
@@ -10,3 +11,4 @@ if __name__ == "__main__":
     (titles, artists, track_times, record_time) = xia.xiami(test_user)
     logger.info((titles, artists, track_times, record_time))
     last.scrobble(test_user, titles, artists, track_times, record_time)
+    # test()

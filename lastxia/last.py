@@ -17,13 +17,13 @@ def scrobble(user, titles, artists, track_times, record_time):
             network.update_now_playing(artists[0], titles[0])
             is_play_on = True
         except pylast.WSError as e:
-            logger(e)
+            logger.info(e)
 
     def scrobble(title, artist, timestamp):
         try:
             network.scrobble(artist, title, timestamp)
         except pylast.WSError as e:
-            logger(e)
+            logger.info(e)
 
     def get_spawns():
         if is_play_on:

@@ -21,7 +21,6 @@ def xiami(user):
     soup = get_soup(xiami_url)
     last_time = user.record_time
     minutes = transform_minutes(last_time)
-
     # There are two situations (1') looking for the time label which is '分钟前'，
     # (2‘)looking for the time label which is '秒前|刚刚'
     track_times = soup.findAll('td', class_='track_time')

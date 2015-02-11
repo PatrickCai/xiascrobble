@@ -16,11 +16,14 @@ class User(Base):
     times = Column(Integer())
     register_time = Column(String(length=45))
     last_loved_song = Column(String(length=45))
+    is_valid = Column(Integer(), default=1)
 
 
 def verify_user(xiami_user_id):
     '''
     Verify whether user has already registered the xiascrobble
+    @(Fix the issue when the user has already register but cancel
+        the lastfm session)
     '''
     db_session = get_session()
     user = db_session.query(User)\
@@ -51,3 +54,18 @@ def get_one_user():
     user = db_session.query(User)\
         .filter(User.users_id == 168488).first()
     return user
+
+
+def set_invalid(session_key):
+    db_session = get_session()
+    user = db_session.query(User)\
+        .filter(User.session == session_key).first()
+    user.is_valid = 0
+    db_session.commit()
+
+
+def get_all_users():
+    db_session = get_session()
+    users = db_session.query(User).all()
+    logger.info(users)
+    return users

@@ -5,9 +5,13 @@ from sqlalchemy.orm import sessionmaker
 Base = declarative_base()
 
 
+with open("constants/mysqlpassword.secret", "r") as txt:
+    mysql_passwd = txt.read()
+
+
 def get_session():
     engine = create_engine(
-        "mysql://root:@localhost/xiascrobble?charset=utf8",
+        "mysql://root:%s@localhost/xiascrobble?charset=utf8" % (mysql_passwd),
         echo=True)
     Base.metadata.create_all(engine)
     Session = sessionmaker()
