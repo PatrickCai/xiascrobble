@@ -11,3 +11,5 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; \
            'Connection': 'keep-alive'}
 
 XIAMI_USER_PREFIX = 'http://www.xiami.com/space/charts-recent/u/'
+
+MAX_TIMES = 5

@@ -1,38 +1,23 @@
 import time
 
-import gevent
-
-from controllers.last_contr import get_network
+from controllers import last_contr, user_contr
 from log import logger
-from utils import pylast
 
 
 def scrobble(user, titles, artists, track_times, record_time):
-    network = get_network()
+    network = last_contr.get_network()
     network.session_key = user.session
     # if the music is playing on
-    is_play_on = False
     if (time.time() - track_times[0]) < 180:
-        try:
-            network.update_now_playing(artists[0], titles[0])
-            is_play_on = True
-        except pylast.WSError as e:
-            logger.info(e)
+        last_contr.update_now_playing(network, artists[0], titles[0])
+    tracks = (titles, artists, track_times)
+    scrobble_tracks = []
+    for title, artist, timestamp in zip(*tracks):
+        scrobble_track = {}
+        scrobble_track['artist'] = artist
+        scrobble_track['title'] = title
+        scrobble_track['timestamp'] = timestamp
+        scrobble_tracks.append(scrobble_track)
 
-    def scrobble(title, artist, timestamp):
-        try:
-            network.scrobble(artist, title, timestamp)
-        except pylast.WSError as e:
-            logger.info(e)
-
-    def get_spawns():
-        if is_play_on:
-            tracks = (titles[1:], artists[1:], track_times[1:])
-        else:
-            tracks = (titles, artists, track_times)
-
-        spawns = [gevent.spawn(scrobble, title, artist, timestamp)
-                  for title, artist, timestamp
-                  in zip(*tracks)]
-        return spawns
-    gevent.joinall(get_spawns())
+    last_contr.scrobble_many(network, scrobble_tracks)
+    user_contr.update_record_times(user.users_id, record_time)

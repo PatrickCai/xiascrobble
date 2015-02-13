@@ -12,7 +12,7 @@ with open("constants/mysqlpassword.secret", "r") as txt:
 def get_session():
     engine = create_engine(
         "mysql://root:%s@localhost/xiascrobble?charset=utf8" % (mysql_passwd),
-        echo=True)
+        echo=False)
     Base.metadata.create_all(engine)
     Session = sessionmaker()
     Session.configure(bind=engine)

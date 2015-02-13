@@ -12,7 +12,7 @@ from constants.main import HEADERS
 from log import logger
 
 
-proxies_pickle = cPickle.load(open("best_daili", 'r'))
+proxies_pickle = cPickle.load(open("constants/good_ips", 'r'))
 proxies_list = [{'http': 'http://%s' % (proxy)}
                 for proxy in proxies_pickle]
 
@@ -37,8 +37,7 @@ def get_soup(xiami_url):
         else:
             raise StatusException(r.status_code)
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout,
-            socket.timeout, StatusException) as e:
-        logger.info('Proxy is %s error is %s' % (proxies, e))
+            socket.timeout, StatusException):
         soup = get_soup(xiami_url)
         print('ConnectionError or timeout')
     return soup

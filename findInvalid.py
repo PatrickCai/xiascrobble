@@ -37,7 +37,7 @@ def worker(worker_id):
     while not tasks.empty():
         task = tasks.get()
         user_scrobble(task)
-        logger.info("The worker %s has got task %s " % (worker_id, task))
+        # logger.info("The worker %s has got task %s " % (worker_id, task))
 
 
 def generate_workers():
@@ -47,9 +47,9 @@ def generate_workers():
 
 
 if __name__ == "__main__":
-    # test_user = user.get_one_user()
-    # user_scrobble(test_user)
-    gevent.spawn(boss).join()
+    test_user = user.get_one_user()
+    user_scrobble(test_user)
+    # gevent.spawn(boss).join()
 
-    workers = generate_workers()
-    gevent.joinall(workers)
+    # workers = generate_workers()
+    # gevent.joinall(workers)

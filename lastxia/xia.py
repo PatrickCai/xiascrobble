@@ -5,10 +5,12 @@ import re
 import time
 
 from datetime import datetime
+
 from constants.main import XIAMI_USER_PREFIX
 from log import logger
 from utils.connection import get_soup
 from utils.xsTime import transform_minutes, get_last_minutes
+from models import user as muser
 
 
 def xiami(user):
@@ -31,7 +33,6 @@ def xiami(user):
 
     second_exist = re.search(u'秒前|刚刚', second_html.text) \
         if second_html else False
-
     if track_times or second_exist:
         exists_times = [int(track_time) for track_time in track_times
                         if int(track_time) < 10]
@@ -72,8 +73,10 @@ def xiami(user):
             # database.modify_user(user[0], user[2])
             return [None] * 4
         else:
+            muser.not_listening(user.users_id)
             # database.not_listening(user[0])
             return [None] * 4
     else:
+        muser.not_listening(user.users_id)
         # database.not_listening(user[0])
         return [None] * 4

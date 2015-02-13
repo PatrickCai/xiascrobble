@@ -10,15 +10,13 @@ def get_network():
     return network
 
 
-def get_lastfm_url(user_xiami_id):
+def get_lastfm_url():
     '''
     Fetch the url in the last.fm to make user connect to the last.fm
     '''
     network = get_network()
     sg = pylast.SessionKeyGenerator(network)
-    # @todo(change it to the real ip)
-    callback_url = 'http://127.0.0.1:81/third?username=%s'\
-        % (user_xiami_id)
+    callback_url = 'http://scrobble.chom.me/third'
     url = sg.get_web_auth_url(callback_url)
     return url
 
@@ -29,7 +27,6 @@ def token_to_session(access_token):
     '''
     network = get_network()
     sg = pylast.SessionKeyGenerator(network)
-    logger.info("The token is %s" % (access_token))
     session_key = sg.get_web_auth_session_key(access_token)
     return session_key
 
@@ -37,6 +34,35 @@ def token_to_session(access_token):
 def scrobble(network, artist, title, timestamp):
     try:
         network.scrobble(artist, title, timestamp)
+    except pylast.WSError as e:
+        if (str(e) == INVALID_SESSION or str(e) == NOT_USER):
+            user.set_invalid(network.session_key)
+            logger.info("The reason %s the sessio key %s "
+                        % (e, network.session_key))
+        logger.info(network.session_key)
+
+
+def scrobble_many(network, tracks):
+    '''
+    Scrobble many tracks
+    '''
+    try:
+        network.scrobble_many(tracks)
+    except pylast.WSError as e:
+        if (str(e) == INVALID_SESSION or str(e) == NOT_USER):
+            user.set_invalid(network.session_key)
+            logger.info("The reason %s the sessio key %s "
+                        % (e, network.session_key))
+        logger.info(network.session_key)
+
+
+def update_now_playing(network, artist, title):
+    '''
+    Update now playing
+    @todo(Refactor it with decorators)
+    '''
+    try:
+        network.update_now_playing(artist, title)
     except pylast.WSError as e:
         if (str(e) == INVALID_SESSION or str(e) == NOT_USER):
             user.set_invalid(network.session_key)

@@ -18,3 +18,26 @@ def save_session(user_xiami_id, session):
     record_time = record_time.strftime('%Y-%m-%d %H:%M:%S')
     now_time = datetime.now()
     user.insert_user(user_xiami_id, session, record_time, now_time)
+
+
+def get_available_users():
+    '''
+    Return all users whose 1.times is zero 2.the valid user
+    '''
+    return user.get_available_users()
+
+
+def update_record_times(user_id, record_time):
+    '''
+    When a user has scrobbled,it should update its last record_time
+    to the latest time
+    '''
+    user.update_record_times(user_id, record_time)
+
+
+def update_user_times():
+    '''
+    Update all users whose times is larger than 0
+    and minus 1
+    '''
+    user.update_user_times()

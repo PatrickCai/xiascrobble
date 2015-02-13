@@ -1,12 +1,12 @@
 from tornado.ioloop import IOLoop
 from application import application
 
-from log import logger
+from log import visitlg
 
 PORT = "8888"
 
 
 if __name__ == "__main__":
-    logger.info("***************************************************")
+    visitlg.info("***************************************************")
     application.listen(PORT)
     IOLoop.current().start()
