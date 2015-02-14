@@ -3,7 +3,6 @@ import time
 from controllers import user_contr
 from lastxia import xia, last
 from log import logger
-from models import user
 from utils import geventWorker
 
 with open('constants/scrobble_workers', "r") as txt:
@@ -29,7 +28,8 @@ if __name__ == "__main__":
         workers = gevent_worker.generate_workers(scrobble)
 
         gevent_worker.joinall(workers, boss)
-        logger.info("The total user is %s " % (len(all_users)))
-        logger.info("The duration is %s " % (time.time() - start_time))
+        user_info = "The total user is %s ||| " % (len(all_users))
+        duration_info = "The duration is %s " % (time.time() - start_time)
+        logger.info(user_info + duration_info)
         print("Now you can stop it")
         time.sleep(60)

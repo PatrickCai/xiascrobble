@@ -8,5 +8,5 @@ PORT = "8888"
 
 if __name__ == "__main__":
     visitlg.info("***************************************************")
-    application.listen(PORT)
+    application.listen(PORT, xheaders=True)
     IOLoop.current().start()

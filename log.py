@@ -17,11 +17,28 @@ fh.setFormatter(form)
 logger.addHandler(fh)
 
 # for people who visits the web
-visitlg = logging.getLogger("Visitor")
-visitlg.setLevel(level)
 
-visitFilename = 'visitor.log'
-vfh = logging.FileHandler(visitFilename)
-vfh.setLevel(level)
-vfh.setFormatter(form)
-visitlg.addHandler(vfh)
+
+class Myvisitlg(logging.getLoggerClass()):
+    def __init__(self, info):
+        super(Myvisitlg, self).__init__(info)
+        self.setLevel(level)
+        visit_filename = 'visitor.log'
+
+        vfh = logging.FileHandler(visit_filename)
+        vfh.setLevel(level)
+        vfh.setFormatter(form)
+        self.addHandler(vfh)
+
+    def info(self, message, request=None):
+        if request:
+            remote_ip = request.request.remote_ip
+            headers = request.request.headers
+            print(headers)
+            super(Myvisitlg, self).info("The ip is %s . %s"
+                                        % (remote_ip, message))
+        else:
+            super(Myvisitlg, self).info(message)
+
+
+visitlg = Myvisitlg("visitor log")

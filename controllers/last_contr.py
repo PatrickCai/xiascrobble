@@ -53,7 +53,7 @@ def scrobble_many(network, tracks):
             user.set_invalid(network.session_key)
             logger.info("The reason %s the sessio key %s "
                         % (e, network.session_key))
-        logger.info(network.session_key)
+        logger.info("Network error %s " % network.session_key)
 
 
 def update_now_playing(network, artist, title):

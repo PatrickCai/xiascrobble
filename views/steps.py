@@ -7,7 +7,7 @@ from controllers import user_contr, last_contr
 
 class WelcomeHandler(tornado.web.RequestHandler):
     def get(self):
-        visitlg.info("In the welcome")
+        visitlg.info("In the welcome", self)
         self.render("index.html")
 
 
@@ -39,7 +39,8 @@ class SecondHandler(tornado.web.RequestHandler):
         '@todo(Consider the user click the url for mistake, redirect it to\
                the welcome page)'
         user_xiami_id = int(self.get_secure_cookie("user_xiami_id"))
-        visitlg.info("In the second html, the user id is %s" % (user_xiami_id))
+        visitlg.info("In the second html, the user id is %s" % (user_xiami_id),
+                     self)
         lastfm_url = last_contr.get_lastfm_url()
         self.render("second.html", lastfm_url=lastfm_url)
 
@@ -50,7 +51,8 @@ class ThirdHandler(tornado.web.RequestHandler):
     '''
     def get(self):
         user_xiami_id = int(self.get_secure_cookie("user_xiami_id"))
-        visitlg.info("In the third html user id is %s " % (user_xiami_id))
+        visitlg.info("In the third html user id is %s " % (user_xiami_id),
+                     self)
         access_token = self.get_argument("token")
         session = last_contr.token_to_session(access_token)
         user_contr.save_session(user_xiami_id, session)
