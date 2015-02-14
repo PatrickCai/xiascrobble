@@ -56,6 +56,7 @@ target/
 
 # MyProject
 *.secret
+good_ips
+original_ips
 
 sftp-config.json
-xiabase.py

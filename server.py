@@ -3,10 +3,15 @@ from application import application
 
 from log import visitlg
 
-PORT = "8888"
+import cPickle
+
+
+with open("constants/port.secret") as txt:
+    PORT = txt.read()
 
 
 if __name__ == "__main__":
+    print("This is the test")
     visitlg.info("***************************************************")
     application.listen(PORT, xheaders=True)
     IOLoop.current().start()
