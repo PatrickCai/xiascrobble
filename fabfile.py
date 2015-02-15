@@ -16,12 +16,13 @@ def local_operation(commit_msg):
         local('git push origin hotfix:hotfix')
 
 
-def remote_operation(commit_msg):
+def remote_operation():
     print("Remote ~")
     with cd("/root/xiascrobble"):
-        run('git pull origin hotfix -m "%s"' % (commit_msg))
+        run('git fetch origin hotfix')
+        run('git checkout origin/hotfix')
 
 
 def oper(commit_msg):
     local_operation(commit_msg)
-    remote_operation(commit_msg)
+    remote_operation()
