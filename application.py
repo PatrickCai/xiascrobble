@@ -12,6 +12,7 @@ SETTINGS = {
     'debug': True,
     'template_path': os.path.join(os.path.dirname(__file__), "templates"),
     'cookie_secret': cookie_secret,
+    'login_url': '/first?',
 }
 
 
