@@ -11,8 +11,6 @@ with open("constants/port.secret") as txt:
 
 
 if __name__ == "__main__":
-    print("This is the test")
-    print("OOOO")
     visitlg.info("***************************************************")
     application.listen(PORT, xheaders=True)
     IOLoop.current().start()
