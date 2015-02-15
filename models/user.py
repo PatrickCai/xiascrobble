@@ -24,29 +24,43 @@ class User(Base):
 
 def verify_user(xiami_user_id):
     '''
-    Verify whether user has already registered the xiascrobble
-    @todo(Fix the issue when the user has already register but cancel
-        the lastfm session)
+    Verify whether the user is already in the database
+    There are two cases 1.the user is not in the database
+    2. the user is invalid
     '''
     db_session = get_session()
     user = db_session.query(User)\
         .filter(User.users_id == xiami_user_id).first()
-    return bool(user)
+    if user and user.is_valid == 1:
+        return True
+    else:
+        return False
 
 
 def insert_user(user_xiami_id, session, record_time, now_time):
     '''
-    Insert the user into database
+    Insert the user into database, if the user has already exists,
+    set the is_valid to 1
     '''
     db_session = get_session()
-    times = 0
-    last_loved_song = "None"
-    visitlg.info("Register sucessfully user id is %s" % user_xiami_id)
-    user = User(users_id=user_xiami_id, session=session,
-                record_time=record_time, times=times,
-                last_loved_song=last_loved_song, register_time=now_time)
-    db_session.add(user)
-    db_session.commit()
+
+    test_user = db_session.query(User)\
+        .filter(User.users_id == user_xiami_id).first()
+
+    if test_user:
+        test_user.session = session
+        test_user.times = 0
+        test_user.is_valid = 1
+        db_session.commit()
+    else:
+        times = 0
+        last_loved_song = "None"
+        visitlg.info("Register sucessfully user id is %s" % user_xiami_id)
+        user = User(users_id=user_xiami_id, session=session,
+                    record_time=record_time, times=times,
+                    last_loved_song=last_loved_song, register_time=now_time)
+        db_session.add(user)
+        db_session.commit()
 
 
 def get_available_users():

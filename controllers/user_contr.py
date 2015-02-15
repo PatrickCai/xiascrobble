@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 def verify_user(user_xiami_id):
     '''
     Verify whether the user is already in the database
+    There are two cases 1.the user is not in the database
+    2. the user is invalid
     '''
     do_exist = user.verify_user(user_xiami_id)
     return do_exist

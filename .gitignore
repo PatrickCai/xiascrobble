@@ -60,3 +60,4 @@ good_ips
 original_ips
 
 sftp-config.json
+fabfile.py
