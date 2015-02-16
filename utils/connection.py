@@ -5,17 +5,12 @@ import cPickle
 import requests
 import socket
 
-from random import choice
 from bs4 import BeautifulSoup
 
 from constants.main import HEADERS
 from utils.count import err_count
 from log import logger
-
-
-proxies_pickle = cPickle.load(open("constants/good_ips", 'r'))
-proxies_list = [{'http': 'http://%s' % (proxy)}
-                for proxy in proxies_pickle]
+from models.ip import get_random_ip, delete_ip
 
 
 class StatusException(Exception):
@@ -27,7 +22,8 @@ class StatusException(Exception):
 
 
 def get_soup(xiami_url):
-    proxies = choice(proxies_list)
+    proxies_ip = get_random_ip()
+    proxies = {'http': 'http://%s' % (proxies_ip)}
     try:
         r = requests.get(xiami_url, headers=HEADERS, proxies=proxies,
                          timeout=6)
@@ -41,8 +37,8 @@ def get_soup(xiami_url):
             raise StatusException(r.status_code)
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout,
             socket.timeout, StatusException, socket.error) as e:
+        delete_ip(proxies_ip)
         soup = get_soup(xiami_url)
         err_count.add_count()
-        print(proxies)
         print(str(e))
     return soup

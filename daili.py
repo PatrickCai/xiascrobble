@@ -1,7 +1,6 @@
 #! /usr/bin/env python
 # -- encoding:utf - 8 --
 
-import time
 import cPickle
 import requests
 import random
@@ -9,7 +8,9 @@ import random
 from constants.main import HEADERS
 from bs4 import BeautifulSoup
 from utils import geventWorker
+from utils import xsTime
 from log import proxylog
+from models.ip import store_ips, get_ip_number
 
 with open("constants/ip_proxy_times") as txt:
     ip_proxy_times = int(txt.read())
@@ -37,12 +38,12 @@ def try_proxy(daili, progress, good_dailis):
 
 
 def get_daili():
-    workers_number = 15
+    workers_number = 20
     good_dailis = []
     dailis = cPickle.load(open('constants/original_ips', 'r'))
-    # Only try 300 one time
+    # Only try 500 one time
     random.shuffle(dailis)
-    dailis = dailis[0: 300]
+    dailis = dailis[0: 500]
     gevent_worker = geventWorker.Worker(workers_number)
     boss = gevent_worker.generate_boss(dailis)
     workers = gevent_worker.generate_workers(try_proxy, good_dailis)
@@ -50,9 +51,16 @@ def get_daili():
 
     random.shuffle(good_dailis)
     proxylog.info("Update %s proxy ips" % len(good_dailis))
-    cPickle.dump(good_dailis, open('constants/good_ips', 'w'))
+    store_ips(good_dailis)
     print("Daili get %s " % len(good_dailis))
 
 if __name__ == "__main__":
-    get_daili()
-    proxylog.info("Update over")
+    while 1:
+        ip_number = get_ip_number()
+        show_number = lambda x: proxylog.info("The ip number is %s"
+                                              % (x))
+        xsTime.is_clock(show_number, ip_number)
+        if ip_number < 100:
+            get_daili()
+            proxylog.info("Update over")
+        xsTime.sleep(60)

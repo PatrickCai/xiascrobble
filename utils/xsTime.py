@@ -22,7 +22,15 @@ def sleep(seconds, msg=None):
     Similar to time.sleep() ,add the additional msg
     '''
     if not msg:
-        print("Now you should wait %s seconds")
+        print("Now you should wait %s seconds" % (seconds))
     else:
         print("Now you should wait %s" % (msg))
     time.sleep(seconds)
+
+
+def is_clock(func, *args, **kwargs):
+    '''
+    If it is like 17:00 or 13:00, it will run the function
+    '''
+    if datetime.now().minute == 0:
+        return func(*args, **kwargs)
