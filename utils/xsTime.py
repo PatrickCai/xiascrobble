@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timedelta
 
 
@@ -14,3 +15,14 @@ def get_last_minutes(minutes):
     record_time = datetime.now() - timedelta(minutes=minutes)
     record_time = record_time.strftime('%Y-%m-%d %H:%M:%S')
     return record_time
+
+
+def sleep(seconds, msg=None):
+    '''
+    Similar to time.sleep() ,add the additional msg
+    '''
+    if not msg:
+        print("Now you should wait %s seconds")
+    else:
+        print("Now you should wait %s" % (msg))
+    time.sleep(seconds)

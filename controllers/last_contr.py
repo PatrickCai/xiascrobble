@@ -71,6 +71,22 @@ def update_now_playing(network, artist, title):
         logger.info(network.session_key)
 
 
+def love_track(artist, title, network):
+    '''
+    Scrobble the user's today loved songs to the Last fm
+    '''
+    try:
+        track = pylast.Track(artist, title, network)
+        track.love()
+    except pylast.WSError as e:
+        if (str(e) == INVALID_SESSION or str(e) == NOT_USER):
+            user.set_invalid(network.session_key)
+            logger.info("The reason %s the sessio key %s "
+                        % (e, network.session_key))
+        print(e)
+        logger.info(network.session_key)
+
+
 def rm_scrobble(network, artist, title, timestamp):
     try:
         user = network.get_authenticated_user()

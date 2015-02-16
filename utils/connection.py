@@ -32,12 +32,14 @@ def get_soup(xiami_url):
                          timeout=6)
         if r.status_code == 200:
             soup = BeautifulSoup(r.content)
-            if not soup.title or soup.title.text == u'亲，访问受限了':
+            is_foreign_ip = soup.find('input', id='J_email')
+            if not soup.title or soup.title.text == u'亲，访问受限了'\
+                    or is_foreign_ip:
                 raise StatusException('受限了')
         else:
             raise StatusException(r.status_code)
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout,
-            socket.timeout, StatusException):
+            socket.timeout, StatusException, socket.error):
         soup = get_soup(xiami_url)
         print('ConnectionError or timeout')
     return soup

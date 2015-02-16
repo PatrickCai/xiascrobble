@@ -23,7 +23,8 @@ def try_proxy(daili, progress, good_dailis):
 
         if req.status_code == 200:
             soup = BeautifulSoup(req.content)
-            if not soup.title.text == u'亲，访问受限了':
+            is_foreign_ip = soup.find('input', id='J_email')
+            if not soup.title.text == u'亲，访问受限了' and not is_foreign_ip:
                 good_dailis.append(daili)
                 print('%s' % (proxies))
         else:

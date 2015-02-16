@@ -10,6 +10,7 @@ with open('constants/scrobble_workers', "r") as txt:
 
 
 def scrobble(one_user, progress):
+    "@todo (use decorator to print progress)"
     print(progress)
     (titles, artists, track_times, record_time) = xia.xiami(one_user)
     # logger.info([titles, artists, track_times, record_time])

@@ -11,5 +11,8 @@ HEADERS = {'User-Agent': 'Mozilla/5.0 (Macintosh; \
            'Connection': 'keep-alive'}
 
 XIAMI_USER_PREFIX = 'http://www.xiami.com/space/charts-recent/u/'
+XIAMI_USER_LOVED_PREFIX = 'http://www.xiami.com/space/lib-song/u/'
+XIAMI_SONG_PREFIX = 'http://www.xiami.com/song/'
 
 MAX_TIMES = 5
+HOURS_OF_TWELVE = 60 * 60 * 12

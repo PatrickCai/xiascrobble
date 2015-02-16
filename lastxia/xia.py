@@ -3,14 +3,22 @@
 
 import re
 import time
+import collections
 
 from datetime import datetime
 
 from constants.main import XIAMI_USER_PREFIX
+from constants.main import XIAMI_USER_LOVED_PREFIX
+from constants.main import XIAMI_SONG_PREFIX
+
 from log import logger
 from utils.connection import get_soup
 from utils.xsTime import transform_minutes, get_last_minutes
 from models import user as muser
+
+
+Track = collections.namedtuple('Track',
+                               ['song_id', 'title', "album", "artist"])
 
 
 def xiami(user):
@@ -80,3 +88,45 @@ def xiami(user):
         muser.not_listening(user.users_id)
         # database.not_listening(user[0])
         return [None] * 4
+
+
+def love(one_user):
+    user_id = one_user.users_id
+    last_loved_song = one_user.last_loved_song
+    xiami_url = '%s%s' % (XIAMI_USER_LOVED_PREFIX, user_id)
+    soup = get_soup(xiami_url)
+    songs_ids_htmls = soup.findAll('tr', id=re.compile('lib_song_\d+'))
+    songs_ids = [re.search('lib_song_(\d+)', songs_IDs_html['id']).group(1)
+                 for songs_IDs_html in songs_ids_htmls]
+    if last_loved_song == 'None':
+        loved_songs_ids = songs_ids
+    elif last_loved_song in songs_ids:
+        place = songs_ids.index(last_loved_song)
+        loved_songs_ids = songs_ids[0: place]
+    else:
+        loved_songs_ids = songs_ids
+
+    loved_songs = []
+    for loved_song_ID in loved_songs_ids:
+        love_url = '%s%s' % (XIAMI_SONG_PREFIX, loved_song_ID)
+        soup = get_soup(love_url)
+        title_html = soup.find("meta", {"property": 'og:title'})
+        title = title_html['content']
+        album_artist_html = soup.find('table', id='albums_info')
+        # There are some rare and special cases where the url doesn't fit
+        # the normal one,so just ignore it.
+        if not album_artist_html:
+            continue
+        album_html = album_artist_html.find('a',
+                                            href=re.compile('/album/\d+'))
+        album = album_html['title']
+        artists_htmls = album_artist_html.findAll('tr')[1]
+        '@todo(Fix the problem see \
+        http://www.xiami.com/song/1772575223'
+        artists_htmls = artists_htmls.findAll('a')
+        artists = [artist_html.text for artist_html in artists_htmls
+                   if artist_html != ' ']
+        artist = ' & '.join(artists)
+        track = Track(loved_song_ID, title, album, artist)
+        loved_songs.append(track)
+    return loved_songs

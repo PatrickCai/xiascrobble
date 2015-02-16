@@ -21,3 +21,14 @@ def scrobble(user, titles, artists, track_times, record_time):
 
     last_contr.scrobble_many(network, scrobble_tracks)
     user_contr.update_record_times(user.users_id, record_time)
+
+
+def love(one_user, loved_songs):
+    '''
+    Scrobble the user's today loved songs to the Last fm
+    '''
+    network = last_contr.get_network()
+    network.session_key = one_user.session
+    for loved_song in loved_songs:
+        last_contr.love_track(loved_song.artist, loved_song.title,
+                              network)

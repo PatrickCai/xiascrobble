@@ -74,6 +74,16 @@ def get_available_users():
     return available_users
 
 
+def get_all_love_users():
+    '''
+    Return all users who will sync their loved track
+    '''
+    db_session = get_session()
+    available_users = db_session.query(User)\
+        .filter(User.is_valid == 1).all()
+    return available_users
+
+
 def not_listening(user_id):
     '''
     When the user is not listening change its time to MAX
@@ -122,13 +132,24 @@ def random_user_times():
     db_session.commit()
 
 
+def update_last_loved(user_id, last_song_id):
+    '''
+    Update the user's last loved song to the latest
+    '''
+    db_session = get_session()
+    user = db_session.query(User)\
+        .filter(User.users_id == user_id).first()
+    user.last_loved_song = last_song_id
+    db_session.commit()
+
+
 def get_one_user():
     '''
     Get one user as test user
     '''
     db_session = get_session()
     user = db_session.query(User)\
-        .filter(User.users_id == 168488).first()
+        .filter(User.users_id == 2795013).first()
     return user
 
 

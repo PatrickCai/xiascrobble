@@ -1,7 +1,7 @@
 from controllers import last_contr
 from models import user
 
-session_key = '46cbf306e994b82bcb03c361b91f13b8'
+session_key = 'a5238b292a474bef7dfd2c868dadf726'
 
 
 if __name__ == "__main__":

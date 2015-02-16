@@ -29,6 +29,13 @@ def get_available_users():
     return user.get_available_users()
 
 
+def get_all_love_users():
+    '''
+    Return all users who will sync their loved track
+    '''
+    return user.get_all_love_users()
+
+
 def update_record_times(user_id, record_time):
     '''
     When a user has scrobbled,it should update its last record_time
@@ -43,3 +50,10 @@ def update_user_times():
     and minus 1
     '''
     user.update_user_times()
+
+
+def update_last_loved(user_id, last_song_id):
+    '''
+    Update the user's last loved song to the latest
+    '''
+    user.update_last_loved(user_id, last_song_id)

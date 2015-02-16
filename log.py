@@ -19,13 +19,11 @@ logger.addHandler(fh)
 # for people who visits the web
 
 
-class Myvisitlg(logging.getLoggerClass()):
-    def __init__(self, info):
-        super(Myvisitlg, self).__init__(info)
+class Xslog(logging.getLoggerClass()):
+    def __init__(self, info, filename):
+        super(Xslog, self).__init__(info)
         self.setLevel(level)
-        visit_filename = 'visitor.log'
-
-        vfh = logging.FileHandler(visit_filename)
+        vfh = logging.FileHandler(filename)
         vfh.setLevel(level)
         vfh.setFormatter(form)
         self.addHandler(vfh)
@@ -35,10 +33,12 @@ class Myvisitlg(logging.getLoggerClass()):
             remote_ip = request.request.remote_ip
             headers = request.request.headers
             print(headers)
-            super(Myvisitlg, self).info("The ip is %s . %s"
-                                        % (remote_ip, message))
+            super(Xslog, self).info("The ip is %s . %s"
+                                    % (remote_ip, message))
         else:
-            super(Myvisitlg, self).info(message)
+            super(Xslog, self).info(message)
 
-
-visitlg = Myvisitlg("visitor log")
+# for web visitors
+visitlg = Xslog("visitor log", 'visitor.log')
+# for logging sync loved songs
+lovelog = Xslog("love", "logs/love.log")
