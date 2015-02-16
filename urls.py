@@ -1,3 +1,5 @@
+import tornado.web
+
 from views.steps import WelcomeHandler, FirstHandler
 from views.steps import VerifyHandler, TestHandler, SecondHandler
 from views.steps import ThirdHandler
@@ -9,4 +11,5 @@ urls = [
     (r"/second", SecondHandler),
     (r"/third", ThirdHandler),
     (r"/test", TestHandler),
+    (r'/welcome', tornado.web.RedirectHandler, dict(url='/'))
 ]
