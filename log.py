@@ -38,7 +38,12 @@ class Xslog(logging.getLoggerClass()):
         else:
             super(Xslog, self).info(message)
 
+
 # for web visitors
 visitlg = Xslog("visitor log", 'visitor.log')
 # for logging sync loved songs
 lovelog = Xslog("love", "logs/love.log")
+# for recording updating proxy ips
+proxylog = Xslog("proxy", "logs/proxy.log")
+# For recording xiami connnectio error
+x_conn_err = Xslog("Xiami connectio error", "logs/x_conn_err.log")

@@ -2,8 +2,10 @@ import time
 
 from controllers import user_contr
 from lastxia import xia, last
-from log import logger
+from log import logger, x_conn_err
 from utils import geventWorker
+from utils.count import err_count
+
 
 with open('constants/scrobble_workers', "r") as txt:
     SCROBBLE_WORKERS_NUMBER = int(txt.read())
@@ -25,12 +27,17 @@ if __name__ == "__main__":
         all_users = user_contr.get_available_users()
 
         boss = gevent_worker.generate_boss(all_users)
-
         workers = gevent_worker.generate_workers(scrobble)
-
         gevent_worker.joinall(workers, boss)
+        # Log user
         user_info = "The total user is %s ||| " % (len(all_users))
         duration_info = "The duration is %s " % (time.time() - start_time)
         logger.info(user_info + duration_info)
-        print("Now you can stop it")
+        # Log connection error
+        xiami_err_count = err_count.report_count()
+        x_err_count_info = 'The xiami connection error number is %s,\
+            total user %s' % (xiami_err_count, len(all_users))
+        x_err_percentage = 'The percentage is %s' %\
+            (int(float(xiami_err_count) / float(all_users) * 100))
+        x_conn_err.info(x_err_count_info + x_err_percentage)
         time.sleep(60)
