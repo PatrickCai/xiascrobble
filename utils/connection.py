@@ -9,6 +9,7 @@ from random import choice
 from bs4 import BeautifulSoup
 
 from constants.main import HEADERS
+from utils.count import err_count
 from log import logger
 
 
@@ -41,5 +42,6 @@ def get_soup(xiami_url):
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout,
             socket.timeout, StatusException, socket.error):
         soup = get_soup(xiami_url)
+        err_count.add_count()
         print('ConnectionError or timeout')
     return soup
