@@ -8,7 +8,8 @@ class Count(object):
         self.count += 1
 
     def report_count(self):
+        count = self.count
         self.count = 0
-        return self.count
+        return count
 
 err_count = Count("Xiami Connection error")
