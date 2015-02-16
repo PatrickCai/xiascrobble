@@ -13,11 +13,11 @@ with open('constants/scrobble_workers', "r") as txt:
 
 def scrobble(one_user, progress):
     "@todo (use decorator to print progress)"
-    print(progress)
     (titles, artists, track_times, record_time) = xia.xiami(one_user)
     # logger.info([titles, artists, track_times, record_time])
     if titles:
         last.scrobble(one_user, titles, artists, track_times, record_time)
+    print(progress)
 
 
 if __name__ == "__main__":
@@ -35,9 +35,8 @@ if __name__ == "__main__":
         logger.info(user_info + duration_info)
         # Log connection error
         xiami_err_count = err_count.report_count()
-        print(xiami_err_count)
         x_err_count_info = 'The xiami connection error number is %s,\
-total user %s' % (xiami_err_count, len(all_users))
+total user %s .' % (xiami_err_count, len(all_users))
         x_err_percentage = 'The percentage is %s' %\
             (int(float(xiami_err_count) / float(len(all_users)) * 100))
         x_conn_err.info(x_err_count_info + x_err_percentage)

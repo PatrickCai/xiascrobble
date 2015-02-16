@@ -40,8 +40,9 @@ def get_soup(xiami_url):
         else:
             raise StatusException(r.status_code)
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout,
-            socket.timeout, StatusException, socket.error):
+            socket.timeout, StatusException, socket.error) as e:
         soup = get_soup(xiami_url)
         err_count.add_count()
-        print('ConnectionError or timeout')
+        print(proxies)
+        print(str(e))
     return soup
