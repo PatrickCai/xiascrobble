@@ -36,8 +36,8 @@ if __name__ == "__main__":
         # Log connection error
         xiami_err_count = err_count.report_count()
         x_err_count_info = 'The xiami connection error number is %s,\
-            total user %s' % (xiami_err_count.count, len(all_users))
+            total user %s' % (xiami_err_count, len(all_users))
         x_err_percentage = 'The percentage is %s' %\
-            (int(float(xiami_err_count.count) / float(all_users) * 100))
+            (int(float(xiami_err_count) / float(all_users) * 100))
         x_conn_err.info(x_err_count_info + x_err_percentage)
         time.sleep(60)
