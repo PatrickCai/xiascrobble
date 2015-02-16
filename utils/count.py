@@ -4,6 +4,7 @@ class Count(object):
         self.count = 0
 
     def add_count(self):
+        print("the count is %s " % (self.count))
         self.count += 1
 
     def report_count(self):
