@@ -4,7 +4,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 from xiabase import get_session
-from log import logger, visitlg
+from utils.log import logger, visitlog
 from constants.main import MAX_TIMES
 
 Base = declarative_base()
@@ -55,7 +55,7 @@ def insert_user(user_xiami_id, session, record_time, now_time):
     else:
         times = 0
         last_loved_song = "None"
-        visitlg.info("Register sucessfully user id is %s" % user_xiami_id)
+        visitlog.info("Register sucessfully user id is %s" % user_xiami_id)
         user = User(users_id=user_xiami_id, session=session,
                     record_time=record_time, times=times,
                     last_loved_song=last_loved_song, register_time=now_time)

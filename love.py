@@ -1,11 +1,11 @@
 from utils.geventWorker import Worker
 from lastxia import last, xia
 from controllers import user_contr
-from log import lovelog
+from utils.log import lovelog
+from utils.zeus import read_constants_file
 from models import user
 
-with open("constants/love_workers") as txt:
-    WORKERS_NUMBER = int(txt.read())
+WORKERS_NUMBER = int(read_constants_file("love_workers"))
 
 
 def love(one_user, progress):

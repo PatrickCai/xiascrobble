@@ -1,12 +1,11 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from utils.zeus import read_constants_file
 
 Base = declarative_base()
 
-
-with open("constants/mysqlpassword.secret", "r") as txt:
-    mysql_passwd = txt.read()
+mysql_passwd = read_constants_file('mysqlpassword.secret')
 
 
 def get_session():

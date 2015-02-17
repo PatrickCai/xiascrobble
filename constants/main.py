@@ -1,3 +1,5 @@
+import os
+
 API_KEY = "2e6e98ec329aa9c86bb8a541fc09bd29"
 API_SECRET = "c86c14938f3344707b0a56a0a1370e69"
 
@@ -16,3 +18,7 @@ XIAMI_SONG_PREFIX = 'http://www.xiami.com/song/'
 
 MAX_TIMES = 5
 HOURS_OF_TWELVE = 60 * 60 * 12
+
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+SCROBBLE_WORKERS_NUMBER = 20

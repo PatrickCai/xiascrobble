@@ -11,7 +11,7 @@ from constants.main import XIAMI_USER_PREFIX
 from constants.main import XIAMI_USER_LOVED_PREFIX
 from constants.main import XIAMI_SONG_PREFIX
 
-from log import logger
+from utils.log import logger
 from utils.connection import get_soup
 from utils.xsTime import transform_minutes, get_last_minutes
 from models import user as muser
@@ -111,6 +111,9 @@ def love(one_user):
         love_url = '%s%s' % (XIAMI_SONG_PREFIX, loved_song_ID)
         soup = get_soup(love_url)
         title_html = soup.find("meta", {"property": 'og:title'})
+        # @todo(See http://www.xiami.com/song/1771918283)
+        if not title_html:
+            continue
         title = title_html['content']
         album_artist_html = soup.find('table', id='albums_info')
         # There are some rare and special cases where the url doesn't fit
@@ -125,7 +128,7 @@ def love(one_user):
         http://www.xiami.com/song/1772575223'
         artists_htmls = artists_htmls.findAll('a')
         artists = [artist_html.text for artist_html in artists_htmls
-                   if artist_html != ' ']
+                   if artist_html.text != '']
         artist = ' & '.join(artists)
         track = Track(loved_song_ID, title, album, artist)
         loved_songs.append(track)

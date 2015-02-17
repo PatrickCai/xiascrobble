@@ -1,18 +1,18 @@
 from tornado.web import authenticated
 from views.base import BaseHandler
-from log import visitlg
+from utils.log import visitlog
 from controllers import user_contr, last_contr
 
 
 class WelcomeHandler(BaseHandler):
     def get(self):
-        visitlg.info("In the welcome", self)
+        visitlog.info("In the welcome", self)
         self.render("index.html")
 
 
 class FirstHandler(BaseHandler):
     def get(self):
-        visitlg.info("In the first html")
+        visitlog.info("In the first html")
         self.render("first.html")
 
 
@@ -39,8 +39,8 @@ class SecondHandler(BaseHandler):
         '@todo(Consider the user click the url for mistake, redirect it to\
                the welcome page)'
         user_xiami_id = int(self.current_user)
-        visitlg.info("In the second html, the user id is %s" % (user_xiami_id),
-                     self)
+        visitlog.info("In the second html, the user id is %s" %
+                      (user_xiami_id), self)
         lastfm_url = last_contr.get_lastfm_url()
         self.render("second.html", lastfm_url=lastfm_url)
 
@@ -52,8 +52,8 @@ class ThirdHandler(BaseHandler):
     @authenticated
     def get(self):
         user_xiami_id = int(self.current_user)
-        visitlg.info("In the third html user id is %s " % (user_xiami_id),
-                     self)
+        visitlog.info("In the third html user id is %s " % (user_xiami_id),
+                      self)
         access_token = self.get_argument("token")
         session = last_contr.token_to_session(access_token)
         user_contr.save_session(user_xiami_id, session)

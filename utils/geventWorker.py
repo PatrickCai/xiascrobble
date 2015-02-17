@@ -4,7 +4,7 @@ from gevent.queue import Queue
 from gevent import monkey
 monkey.patch_socket()
 
-from log import logger
+from utils.log import logger
 
 
 class Worker(object):

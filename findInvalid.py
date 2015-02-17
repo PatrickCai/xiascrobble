@@ -6,7 +6,7 @@ monkey.patch_socket()
 
 from controllers import last_contr as lcont
 from models import user
-from log import logger
+from utils.log import logger
 
 WORKERS_NUMBER = 10
 

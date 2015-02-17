@@ -1,7 +1,7 @@
 import time
 
 from controllers import last_contr, user_contr
-from log import logger
+from utils.log import logger
 
 
 def scrobble(user, titles, artists, track_times, record_time):

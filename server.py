@@ -1,16 +1,13 @@
 from tornado.ioloop import IOLoop
 from application import application
 
-from log import visitlg
+from utils.log import visitlog
+from utils.zeus import read_constants_file
 
-import cPickle
-
-
-with open("constants/port.secret") as txt:
-    PORT = txt.read()
+PORT = int(read_constants_file('port.sercet'))
 
 
 if __name__ == "__main__":
-    visitlg.info("***************************************************")
+    visitlog.info("***************************************************")
     application.listen(PORT, xheaders=True)
     IOLoop.current().start()

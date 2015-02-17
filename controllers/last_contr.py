@@ -1,7 +1,7 @@
 from utils import pylast
 from constants.main import API_KEY, API_SECRET
 from constants.error import INVALID_SESSION, NOT_USER
-from log import logger
+from utils.log import logger
 from models import user
 
 
@@ -84,6 +84,8 @@ def love_track(artist, title, network):
             logger.info("The reason %s the sessio key %s "
                         % (e, network.session_key))
         print(e)
+        print(artist)
+        print(title)
         logger.info(network.session_key)
 
 

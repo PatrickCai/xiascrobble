@@ -9,11 +9,8 @@ from constants.main import HEADERS
 from bs4 import BeautifulSoup
 from utils import geventWorker
 from utils import xsTime
-from log import proxylog
+from utils.log import proxylog, color
 from models.ip import store_ips, get_ip_number
-
-with open("constants/ip_proxy_times") as txt:
-    ip_proxy_times = int(txt.read())
 
 
 def try_proxy(daili, progress, good_dailis):
@@ -50,7 +47,7 @@ def get_daili():
     gevent_worker.joinall(boss, workers)
 
     random.shuffle(good_dailis)
-    proxylog.info("Update %s proxy ips" % len(good_dailis))
+    proxylog.info("Update %s proxy ips" % color(len(good_dailis)))
     store_ips(good_dailis)
     print("Daili get %s " % len(good_dailis))
 

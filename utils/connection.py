@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 
 from constants.main import HEADERS
 from utils.count import err_count
-from log import logger
+from utils.log import logger
 from models.ip import get_random_ip, delete_ip
 
 

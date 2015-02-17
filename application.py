@@ -2,11 +2,12 @@ import os
 
 import tornado.web
 
-# from log import logger
+# from utils.log import logger
 from urls import urls
+from utils.zeus import read_constants_file
 
-with open("constants/cookie_secret.secret", "r") as secret:
-    cookie_secret = secret.read()
+
+cookie_secret = read_constants_file("cookie_secret.secret")
 
 SETTINGS = {
     'debug': True,
